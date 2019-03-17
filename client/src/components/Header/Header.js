@@ -3,24 +3,24 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Settings from '@material-ui/icons/Settings';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuIcon from '@material-ui/icons/Menu';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import UserAvatar from '../UserAvatar/UserAvatar';
+import MenuDrawer from './MenuDrawer/MenuDrawer';
 
 const styles = theme => ({
   root: {
     width: '100%',
   },
+
   grow: {
     flexGrow: 1,
   },
@@ -47,7 +47,7 @@ const styles = theme => ({
     },
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing.unit * 4,
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -63,7 +63,7 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 10,
+    paddingLeft: theme.spacing.unit * 5,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
@@ -74,16 +74,7 @@ const styles = theme => ({
     },
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
     display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
   },
 });
 
@@ -91,6 +82,7 @@ class PrimarySearchAppBar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
+    drawerOpen: false,
   };
 
   handleProfileMenuOpen = event => {
@@ -110,8 +102,14 @@ class PrimarySearchAppBar extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  toggleDrawer = drawerOpen => () => {
+    this.setState({
+      drawerOpen,
+    });
+  };
+
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
+    const { anchorEl, drawerOpen } = this.state;
     const {
       classes,
       handleSearchInputChange,
@@ -120,7 +118,6 @@ class PrimarySearchAppBar extends React.Component {
       searchInput,
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const renderMenu = (
       <Menu
@@ -131,30 +128,7 @@ class PrimarySearchAppBar extends React.Component {
         onClose={this.handleMenuClose}
       >
         <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My Account</MenuItem>
-      </Menu>
-    );
-
-    const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMenuClose}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>
-          <IconButton color="inherit">
-            <Settings />
-          </IconButton>
-          <p>My Account</p>
-        </MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
       </Menu>
     );
 
@@ -162,14 +136,15 @@ class PrimarySearchAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Typography
-              className={classes.title}
-              variant="h6"
+            <IconButton
+              className={classes.menuButton}
               color="inherit"
-              noWrap
+              aria-label="Menu"
+              onClick={this.toggleDrawer(true)}
             >
-              CRNews
-            </Typography>
+              <MenuIcon />
+            </IconButton>
+
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -188,13 +163,19 @@ class PrimarySearchAppBar extends React.Component {
               <FormControlLabel
                 control={
                   <Switch
-                    color="default"
+                    color="secondary"
                     checked={searchAll}
                     onChange={handleSearchTypeChange}
                     aria-label="LoginSwitch"
                   />
                 }
-                label={searchAll ? 'All' : 'Top'}
+                label={
+                  searchAll ? (
+                    <span style={{ color: '#aeaeae' }}>All</span>
+                  ) : (
+                    <span style={{ color: '#aeaeae' }}>Top</span>
+                  )
+                }
               />
             </FormGroup>
             <div className={classes.grow} />
@@ -205,22 +186,13 @@ class PrimarySearchAppBar extends React.Component {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-haspopup="true"
-                onClick={this.handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
+                <UserAvatar />
               </IconButton>
             </div>
           </Toolbar>
         </AppBar>
         {renderMenu}
-        {renderMobileMenu}
+        <MenuDrawer toggleDrawer={this.toggleDrawer} isOpen={drawerOpen} />
       </div>
     );
   }

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 const styles = () => ({});
 
 const ArticleList = ({ articles, classes }) => (
-  <Grid container justify="center">
+  <Grid container>
     {articles.map((article, index) => (
       <Grid item key={index} xs={12} md={6} lg={3}>
         <ArticleCard article={article} />

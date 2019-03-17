@@ -5,16 +5,28 @@
 
   &__text-content {
     padding: 1rem 0 1.5rem 0;
-    background-color: $color-primary;
+    background-image: linear-gradient(
+      180.4deg,
+      rgba(9, 30, 61, 0.9) 45.3%,
+      rgba(95, 123, 190, 1) 279%
+    );
     margin-bottom: 1rem;
+    border-top: 1px dashed $color-secondary;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   }
   &__headline {
     color: $color-white;
     margin: 0rem 0 1rem 0;
     padding: 0 10px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: block;
   }
   &__list {
     max-width: 1400px;
     margin: 0 auto;
+  }
+  &__meta-data {
+    color: $color-secondary;
   }
 }

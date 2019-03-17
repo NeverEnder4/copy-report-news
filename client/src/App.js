@@ -3,9 +3,8 @@ import Header from './components/Header/Header';
 import ArticleList from './components/ArticleList/ArticleList';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import deepPurple from '@material-ui/core/colors/deepPurple';
+
 import red from '@material-ui/core/colors/red';
-import grey from '@material-ui/core/colors/grey';
 import { debounce } from 'lodash';
 import axios from 'axios';
 
@@ -14,10 +13,11 @@ import './App.scss';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: deepPurple['A400'],
+      main: 'rgba(9, 30, 61, 1)',
+      light: 'rgba(95, 123, 190, 1)',
       contrastText: '#ffffff',
     },
-    secondary: { main: grey[300] },
+    secondary: { main: red['A400'] },
     error: { main: red['A400'] },
     background: {
       paper: '#fafafa',
@@ -91,10 +91,17 @@ class App extends Component {
             <main className="search-results">
               <div className="search-results__text-content">
                 <h1 className="search-results__headline">
-                  You searched "{searchInput}"
+                  You searched{' '}
+                  <span className="search-results__meta-data">
+                    {searchInput}
+                  </span>
                 </h1>
                 <span className="search-results__headline">
-                  We found {totalResults} results!{' '}
+                  We found{' '}
+                  <span className="search-results__meta-data">
+                    {totalResults}
+                  </span>{' '}
+                  results!
                 </span>
               </div>
               <div className="search-results__list">
