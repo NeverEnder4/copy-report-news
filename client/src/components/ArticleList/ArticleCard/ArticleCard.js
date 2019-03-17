@@ -8,34 +8,36 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import noImage from './no-image.png';
 
 const styles = {
   card: {
-    maxWidth: '100%',
+    width: '98%',
+    margin: '5px auto',
   },
   media: {
     objectFit: 'cover',
   },
 };
 
-function ArticleCard(props) {
-  const { classes, title, description, src, date, author, name } = props;
+const ArticleCard = ({ classes, article }) => {
+  if (!article.urlToImage) article.urlToImage = noImage;
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
           component="img"
-          alt={name}
+          alt={article.name}
           className={classes.media}
           height="140"
-          image={src}
-          title={name}
+          image={article.urlToImage}
+          title={article.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {title}
+            {article.title}
           </Typography>
-          <Typography component="p">{description}</Typography>
+          <Typography component="p">{article.description}</Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
@@ -48,10 +50,11 @@ function ArticleCard(props) {
       </CardActions>
     </Card>
   );
-}
+};
 
 ArticleCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  article: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ArticleCard);

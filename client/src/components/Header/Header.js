@@ -9,7 +9,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Settings from '@material-ui/icons/Settings';
@@ -30,10 +29,7 @@ const styles = theme => ({
     marginRight: 20,
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+    display: 'block',
   },
   search: {
     position: 'relative',
@@ -95,11 +91,6 @@ class PrimarySearchAppBar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
-    searchAll: true,
-  };
-
-  handleChange = event => {
-    this.setState({ searchAll: event.target.checked });
   };
 
   handleProfileMenuOpen = event => {
@@ -120,8 +111,14 @@ class PrimarySearchAppBar extends React.Component {
   };
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl, searchAll } = this.state;
-    const { classes } = this.props;
+    const { anchorEl, mobileMoreAnchorEl } = this.state;
+    const {
+      classes,
+      handleSearchInputChange,
+      handleSearchTypeChange,
+      searchAll,
+      searchInput,
+    } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -165,13 +162,6 @@ class PrimarySearchAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Open drawer"
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography
               className={classes.title}
               variant="h6"
@@ -190,6 +180,8 @@ class PrimarySearchAppBar extends React.Component {
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
+                onChange={handleSearchInputChange}
+                value={searchInput}
               />
             </div>
             <FormGroup>
@@ -198,7 +190,7 @@ class PrimarySearchAppBar extends React.Component {
                   <Switch
                     color="default"
                     checked={searchAll}
-                    onChange={this.handleChange}
+                    onChange={handleSearchTypeChange}
                     aria-label="LoginSwitch"
                   />
                 }
