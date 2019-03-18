@@ -1,0 +1,98 @@
+@import '../../scss/abstractions/abstractions';
+
+.landing {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(
+      180.4deg,
+      rgba(9, 30, 61, 0.8) 45.3%,
+      rgba(95, 123, 190, 0.8) 279%
+    ),
+    url('../../static/img/hero-relaxed.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 25% center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__container {
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 92%;
+    text-align: center;
+  }
+
+  &__logo {
+    width: 100%;
+    max-width: 1400px;
+    @media (min-width: 1000px) {
+      margin-bottom: -50px;
+    }
+  }
+  &__subheading {
+    color: $color-white;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 2px rgba($color-black, 0.8);
+    @media (min-width: 375px) {
+      font-size: 1.4rem;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 1200px) {
+      letter-spacing: 3px;
+      font-size: 2rem;
+      margin-top: 0;
+    }
+
+    &--small {
+      color: $color-secondary;
+      font-weight: 200;
+      font-size: 1rem;
+      letter-spacing: 1.5px;
+      text-shadow: 1px 1px 2px rgba($color-black, 0.8);
+      @media (min-width: 1200px) {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  &__button-container {
+    display: flex;
+
+    @media (min-width: 375px) {
+      margin-top: 2vh;
+    }
+    @media (min-width: 1000px) {
+      margin-top: 2rem;
+    }
+  }
+  &__attribution {
+    position: absolute;
+    bottom: -10px;
+    color: $color-white;
+    font-weight: 200;
+    text-shadow: 1px 1px 2px rgba($color-black, 0.8);
+
+    @media (min-width: 1200px) {
+      font-size: 1.3rem;
+    }
+  }
+  &__attribution-link {
+    text-decoration: none;
+    color: $color-secondary;
+    font-weight: 700;
+    transition: all 200ms cubic-bezier(0.19, 1, 0.22, 1);
+    &:hover,
+    &:focus {
+      color: $color-secondary-light;
+      text-decoration: underline;
+    }
+  }
+}

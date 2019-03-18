@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -16,15 +17,12 @@ import logo from '../../../static/crn-logo.svg';
 
 import './MenuDrawer.scss';
 
-const styles = {
+const styles = theme => ({
   list: {
     width: 250,
     marginTop: '120px',
   },
-  paper: {
-    backgroundColor: '#000000',
-  },
-};
+});
 
 class TemporaryDrawer extends React.Component {
   render() {
@@ -33,14 +31,17 @@ class TemporaryDrawer extends React.Component {
     const sideList = (
       <div className={classes.list}>
         <List>
+          <Link to="/search">
+            <ListItem button>
+              <ListItemIcon>
+                <SearchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Search" />
+            </ListItem>
+          </Link>
+
           <ListItem button>
-            <ListItemIcon>
-              <SearchIcon />
-            </ListItemIcon>
-            <ListItemText primary="Search" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
+            <ListItemIcon classes={{ root: classes.listItemIcon }}>
               <SavedIcon />
             </ListItemIcon>
             <ListItemText primary="Saved" />
@@ -73,7 +74,9 @@ class TemporaryDrawer extends React.Component {
     return (
       <Drawer open={isOpen} onClose={toggleDrawer(false)}>
         <div className="menu-drawer__header">
-          <img className="menu-drawer__logo" src={logo} alt="" />
+          <Link to="/">
+            <img className="menu-drawer__logo" src={logo} alt="" />
+          </Link>
         </div>
         <div
           tabIndex={0}

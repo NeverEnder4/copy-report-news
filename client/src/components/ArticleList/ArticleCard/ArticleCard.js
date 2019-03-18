@@ -14,9 +14,19 @@ const styles = {
   card: {
     width: '98%',
     margin: '5px auto',
+    animation: 'fade-in 500ms cubic-bezier(0.19, 1, 0.22, 1) forwards',
   },
   media: {
     objectFit: 'cover',
+  },
+
+  '@keyframes fade-in': {
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 1,
+    },
   },
 };
 
