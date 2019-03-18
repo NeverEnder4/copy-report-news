@@ -6,7 +6,6 @@ import newSci from './news-source-images/new-sci-logo.png';
 import nyt from './news-source-images/nyt-logo.png';
 import reddit from './news-source-images/reddit-logo.png';
 import techRadar from './news-source-images/tech-radar.png';
-import vice from './news-source-images/vice-logo.png';
 
 const logoArray = [
   jazeera,

@@ -1,0 +1,12 @@
+@import '../../scss/abstractions/abstractions';
+
+.form-tabs {
+  &__headline {
+    color: $color-primary;
+    text-align: left;
+
+    @media (min-width: 960px) {
+      text-align: center;
+    }
+  }
+}

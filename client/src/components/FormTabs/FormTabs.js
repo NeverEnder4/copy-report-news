@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import LoginForm from './LoginForm/LoginForm';
 import SignupForm from './SignupForm/SignupForm';
 
+import './FormTabs.scss';
+
 const TabContainer = ({ children, dir }) => {
   return (
     <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
@@ -57,7 +59,7 @@ class FormTabs extends React.Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            variant="fullWidth"
+            centered={true}
           >
             <Tab label="Signup" />
             <Tab label="Login" />
@@ -69,9 +71,12 @@ class FormTabs extends React.Component {
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer dir={theme.direction}>
+            <h1 className="form-tabs__headline">Sign up to start searching</h1>
             <SignupForm />
           </TabContainer>
           <TabContainer dir={theme.direction}>
+            <h1 className="form-tabs__headline">Already a member? Login</h1>
+
             <LoginForm />
           </TabContainer>
         </SwipeableViews>
