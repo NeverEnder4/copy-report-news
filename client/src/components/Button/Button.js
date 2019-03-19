@@ -13,7 +13,15 @@ const styles = theme => ({
   },
 });
 
-const ContainedButtons = ({ classes, text, color, variant, path, type }) => {
+const ContainedButtons = ({
+  classes,
+  text,
+  color,
+  variant,
+  path,
+  type,
+  onClick,
+}) => {
   let component = {};
   let to = {};
 
@@ -30,6 +38,7 @@ const ContainedButtons = ({ classes, text, color, variant, path, type }) => {
       className={classes.button}
       type={type}
       {...to}
+      onClick={onClick}
     >
       {text.toUpperCase(0)}
     </Button>

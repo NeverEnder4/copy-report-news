@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Search from './pages/Search/Search';
-import Landing from './pages/Landing/Landing';
-import Users from './pages/Users/Users';
+import { Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
+import Search from './pages/Search/Search';
+import Landing from './pages/Landing/Landing';
+import Users from './pages/Users/Users';
+import PrivateRoute from './routing/PrivateRoute/PrivateRoute';
+import axios from 'axios';
 
 const theme = createMuiTheme({
   palette: {
@@ -29,16 +31,50 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+      isAuth: false,
+    };
+  }
+
+  authorizeUser = () => {
+    this.setState({ isAuth: true });
+  };
+
+  setUser = user => {
+    this.setState({ user });
+  };
+
+  logOut = () => {
+    this.setState({ isAuth: false, user: null });
+    delete axios.defaults.headers.common['Authorization'];
+  };
+
   render() {
+    const { isAuth } = this.state;
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
           <CssBaseline>
-            <Router>
-              <Route exact path="/" component={Landing} />
-              <Route exact path="/search" component={Search} />
-              <Route exact path="/users" component={Users} />
-            </Router>
+            <Route exact path="/" component={Landing} />
+            <Route
+              path="/users"
+              component={() => (
+                <Users
+                  setUser={this.setUser}
+                  authorizeUser={this.authorizeUser}
+                />
+              )}
+            />
+            <PrivateRoute
+              exact
+              path="/search"
+              logOut={this.logOut}
+              isAuth={isAuth}
+              component={Search}
+            />
           </CssBaseline>
         </MuiThemeProvider>
       </div>

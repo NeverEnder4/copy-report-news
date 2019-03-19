@@ -8,6 +8,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import LoginForm from './LoginForm/LoginForm';
 import SignupForm from './SignupForm/SignupForm';
+import { withSnackbar } from 'notistack';
+import Button from '@material-ui/core/Button';
 
 import './FormTabs.scss';
 
@@ -34,9 +36,8 @@ const styles = theme => ({
 class FormTabs extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      value: props.tabIndex || 0,
+      value: props.tabsIndex || 0,
     };
   }
 
@@ -48,8 +49,16 @@ class FormTabs extends React.Component {
     this.setState({ value: index });
   };
 
+  generateSnackbar = message => {
+    this.props.enqueueSnackbar(message, {
+      variant: 'success',
+      autoHideDuration: 7000,
+      action: <Button size="small">{'Dismiss'}</Button>,
+    });
+  };
+
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, setUser, authorizeUser } = this.props;
 
     return (
       <div className={classes.root}>
@@ -72,12 +81,15 @@ class FormTabs extends React.Component {
         >
           <TabContainer dir={theme.direction}>
             <h1 className="form-tabs__headline">Sign up to start searching</h1>
-            <SignupForm />
+            <SignupForm
+              switchTab={this.handleChangeIndex}
+              generateSnackbar={this.generateSnackbar}
+            />
           </TabContainer>
           <TabContainer dir={theme.direction}>
             <h1 className="form-tabs__headline">Already a member? Login</h1>
 
-            <LoginForm />
+            <LoginForm setUser={setUser} authorizeUser={authorizeUser} />
           </TabContainer>
         </SwipeableViews>
       </div>
@@ -90,4 +102,4 @@ FormTabs.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(FormTabs);
+export default withStyles(styles, { withTheme: true })(withSnackbar(FormTabs));

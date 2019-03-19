@@ -3,6 +3,7 @@ import { debounce } from 'lodash';
 import axios from 'axios';
 import Header from '../../components/Header/Header';
 import ArticleList from '../../components/ArticleList/ArticleList';
+import { withRouter } from 'react-router-dom';
 
 import './Search.scss';
 
@@ -43,7 +44,10 @@ class Search extends Component {
   };
   render() {
     const { articles, searchAll, totalResults, searchInput } = this.state;
+    const { avatar } = this.props.location.state.user;
+    const { user } = this.props.location.state;
 
+    const { logOut } = this.props;
     return (
       <React.Fragment>
         <Header
@@ -51,6 +55,9 @@ class Search extends Component {
           handleSearchTypeChange={this.handleSearchTypeChange}
           searchAll={searchAll}
           searchInput={searchInput}
+          avatar={avatar}
+          logOut={logOut}
+          user={user}
         />
         <main className="search-results">
           <div className="search-results__text-content">
@@ -73,4 +80,4 @@ class Search extends Component {
   }
 }
 
-export default Search;
+export default withRouter(Search);

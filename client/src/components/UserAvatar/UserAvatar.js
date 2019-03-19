@@ -5,23 +5,27 @@ import Avatar from '@material-ui/core/Avatar';
 import pink from '@material-ui/core/colors/pink';
 
 const styles = {
-  avatar: {
-    margin: 10,
-  },
   pinkAvatar: {
     margin: 10,
     color: '#fff',
     backgroundColor: pink['A400'],
+    height: 50,
+    width: 50,
   },
 };
 
-function LetterAvatars(props) {
-  const { classes } = props;
-  return <Avatar className={classes.pinkAvatar}>TP</Avatar>;
-}
+const UserAvatar = ({ classes, avatar }) => {
+  return avatar ? (
+    <Avatar src={avatar} className={classes.pinkAvatar}>
+      TP
+    </Avatar>
+  ) : (
+    <Avatar className={classes.pinkAvatar}>TP</Avatar>
+  );
+};
 
-LetterAvatars.propTypes = {
+UserAvatar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(LetterAvatars);
+export default withStyles(styles)(UserAvatar);

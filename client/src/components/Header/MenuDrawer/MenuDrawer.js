@@ -26,12 +26,12 @@ const styles = theme => ({
 
 class TemporaryDrawer extends React.Component {
   render() {
-    const { classes, isOpen, toggleDrawer } = this.props;
+    const { classes, isOpen, toggleDrawer, handleLogOut, user } = this.props;
 
     const sideList = (
       <div className={classes.list}>
         <List>
-          <Link to="/search">
+          <Link to={{ pathname: '/search', state: { user: user } }}>
             <ListItem button>
               <ListItemIcon>
                 <SearchIcon />
@@ -61,7 +61,7 @@ class TemporaryDrawer extends React.Component {
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </ListItem>
-          <ListItem button>
+          <ListItem onClick={handleLogOut} button>
             <ListItemIcon>
               <ExitToApp />
             </ListItemIcon>

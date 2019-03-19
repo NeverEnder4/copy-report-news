@@ -1,8 +1,11 @@
 import React from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '../../Button/Button';
+import jwt_decode from 'jwt-decode';
+import { withRouter } from 'react-router-dom';
 
 import './LoginForm.scss';
 
@@ -38,21 +41,49 @@ class LoginForm extends React.Component {
   state = {
     email: '',
     password: '',
+    errors: {},
   };
 
-  handleChange = name => event => {
+  handleChange = event => {
     this.setState({
-      [name]: event.target.value,
+      [event.target.name]: event.target.value,
     });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const data = { email: this.state.email, password: this.state.password };
+
+    axios
+      .post('/login', data)
+      .then(response => {
+        this.props.authorizeUser();
+        if (response.data.token)
+          axios.defaults.headers.common['Authorization'] = response.data.token;
+        else delete axios.defaults.headers.common['Authorization'];
+
+        const decoded = jwt_decode(response.data.token);
+        this.props.setUser(decoded.payload);
+        this.props.history.push('/search', { user: decoded.payload });
+      })
+      .catch(err => {
+        if (err.response) this.setState({ errors: err.response.data });
+      });
   };
 
   render() {
     const { classes } = this.props;
+    const { errors } = this.state;
 
     return (
-      <form className={classes.container} noValidate autoComplete="off">
+      <form
+        onSubmit={this.handleSubmit}
+        className={classes.container}
+        noValidate
+        autoComplete="off"
+      >
         <TextField
-          id="outlined-email-input"
+          id="login-email-input"
           label="Email"
           className={classes.textField}
           type="email"
@@ -60,15 +91,22 @@ class LoginForm extends React.Component {
           autoComplete="email"
           margin="normal"
           variant="outlined"
+          onChange={this.handleChange}
+          helperText={errors.email}
+          error={errors.email ? true : false}
         />
         <TextField
-          id="outlined-password-input"
+          id="login-password-input"
           label="Password"
           className={classes.textField}
           type="password"
+          name="password"
           autoComplete="current-password"
           margin="normal"
           variant="outlined"
+          onChange={this.handleChange}
+          helperText={errors.password}
+          error={errors.password ? true : false}
         />
         <div className="login-form__button-container">
           <Button
@@ -93,4 +131,4 @@ LoginForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(LoginForm);
+export default withStyles(styles)(withRouter(LoginForm));

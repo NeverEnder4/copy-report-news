@@ -7,15 +7,21 @@ import HotIcon from '@material-ui/icons/Whatshot';
 import SavedIcon from '@material-ui/icons/Save';
 import DevicesIcon from '@material-ui/icons/Phonelink';
 import Button from '../../components/Button/Button';
+import { withRouter } from 'react-router-dom';
 
 import './Users.scss';
 
-const Users = ({ location }) => {
+const Users = ({ location, setUser, authorizeUser }) => {
   const parsedFormType = queryString.parse(location.search);
-  const tabIndex = parsedFormType.form === 'login' ? 1 : 0;
+  const tabsIndex = parsedFormType.form === 'login' ? 1 : 0;
+
   return (
     <main className="users">
-      <FormTabs tabIndex={tabIndex} />
+      <FormTabs
+        setUser={setUser}
+        authorizeUser={authorizeUser}
+        tabsIndex={tabsIndex}
+      />
       <div className="users__content-container">
         <div className="users__content-position">
           <h1 className="users__headline">
@@ -94,4 +100,4 @@ const Users = ({ location }) => {
   );
 };
 
-export default Users;
+export default withRouter(Users);

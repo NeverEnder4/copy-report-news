@@ -91,15 +91,18 @@ class PrimarySearchAppBar extends React.Component {
 
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
-    this.handleMobileMenuClose();
   };
 
-  handleMobileMenuOpen = event => {
-    this.setState({ mobileMoreAnchorEl: event.currentTarget });
-  };
-
-  handleMobileMenuClose = () => {
+  handleHeaderLogOut = () => {
     this.setState({ mobileMoreAnchorEl: null });
+    this.props.logOut();
+  };
+
+  handleDrawerLogOut = () => {
+    this.setState(prevState => ({
+      drawerOpen: !prevState.drawerOpen,
+    }));
+    this.props.logOut();
   };
 
   toggleDrawer = drawerOpen => () => {
@@ -116,9 +119,11 @@ class PrimarySearchAppBar extends React.Component {
       handleSearchTypeChange,
       searchAll,
       searchInput,
+      avatar,
+      logOut,
+      user,
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
-
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -128,7 +133,7 @@ class PrimarySearchAppBar extends React.Component {
         onClose={this.handleMenuClose}
       >
         <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
+        <MenuItem onClick={this.handleHeaderLogOut}>Logout</MenuItem>
       </Menu>
     );
 
@@ -186,13 +191,18 @@ class PrimarySearchAppBar extends React.Component {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <UserAvatar />
+                <UserAvatar avatar={avatar} />
               </IconButton>
             </div>
           </Toolbar>
         </AppBar>
         {renderMenu}
-        <MenuDrawer toggleDrawer={this.toggleDrawer} isOpen={drawerOpen} />
+        <MenuDrawer
+          handleLogOut={this.handleDrawerLogOut}
+          toggleDrawer={this.toggleDrawer}
+          isOpen={drawerOpen}
+          user={user}
+        />
       </div>
     );
   }
