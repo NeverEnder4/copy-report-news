@@ -9,6 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import noImage from './no-image.png';
+import axios from 'axios';
 
 const styles = {
   card: {
@@ -30,8 +31,16 @@ const styles = {
   },
 };
 
-const ArticleCard = ({ classes, article }) => {
+const ArticleCard = ({ classes, article, user }) => {
   if (!article.urlToImage) article.urlToImage = noImage;
+
+  const handleSave = () => {
+    axios
+      .post('/articles', { article, userId: user.id })
+      .then(savedArticle => console.log(savedArticle))
+      .catch(err => console.log);
+  };
+
   return (
     <Card className={classes.card}>
       <CardActionArea>
@@ -51,7 +60,7 @@ const ArticleCard = ({ classes, article }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button onClick={handleSave} size="small" color="primary">
           Save
         </Button>
         <Button size="small" color="primary">

@@ -1,14 +1,14 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
-const morgan = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const { morganChalk } = require('./middleware/morganChalk');
 require('dotenv').config();
 
 // middlewares
 app.use(helmet());
-app.use(morgan('dev'));
+app.use(morganChalk);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
@@ -17,11 +17,11 @@ app.use(passport.initialize());
 require('./passport/passport')(passport);
 
 // routers
-const news = require('./routes/news');
+const articles = require('./routes/articles');
 const register = require('./routes/register');
 const login = require('./routes/login');
 
-app.use('/news', news);
+app.use('/articles', articles);
 app.use('/register', register);
 app.use('/login', login);
 
@@ -35,4 +35,9 @@ const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
+});
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  // application specific logging, throwing an error, or other logic here
 });

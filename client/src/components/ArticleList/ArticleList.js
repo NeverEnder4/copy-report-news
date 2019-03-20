@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 
 const styles = () => ({});
 
-const ArticleList = ({ articles, classes }) => (
+const ArticleList = ({ articles, classes, user }) => (
   <Grid container>
     {articles.map((article, index) => (
       <Grid item key={index} xs={12} md={6} lg={3}>
-        <ArticleCard article={article} />
+        <ArticleCard user={user} article={article} />
       </Grid>
     ))}
   </Grid>

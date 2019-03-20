@@ -30,7 +30,7 @@ class Search extends Component {
   queryNewsArticles = () => {
     const { searchInput, searchAll } = this.state;
     axios
-      .get(`/news/${searchAll}/${searchInput}`)
+      .get(`/articles/${searchAll}/${searchInput}`)
       .then(response => {
         const { articles, totalResults } = response.data;
         this.setState({ articles, totalResults });
@@ -72,7 +72,7 @@ class Search extends Component {
             </span>
           </div>
           <div className="search-results__list">
-            <ArticleList articles={articles} />
+            <ArticleList articles={articles} user={user} />
           </div>
         </main>
       </React.Fragment>

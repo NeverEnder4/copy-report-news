@@ -15,6 +15,17 @@ module.exports = {
     }
   },
 
+  emptyArticle(input, name, errors) {
+    if (isEmpty(input)) {
+      errors[name] = 'Oops, something went wrong. Please try again';
+    }
+  },
+  emptyUserId(input, name, errors) {
+    if (Validator.isEmpty(input)) {
+      errors[name] = 'Oops, something went wrong. Please try again';
+    }
+  },
+
   length(input, name, min, max, errors) {
     if (!Validator.isLength(input, { min, max })) {
       errors[name] = `Must be between ${min} and ${max} characters`;
