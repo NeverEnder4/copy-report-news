@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
+import jwt from 'jsonwebtoken';
+import cookies from 'js-cookie';
 import axios from 'axios';
 import Header from '../../components/Header/Header';
 import ArticleList from '../../components/ArticleList/ArticleList';
@@ -29,8 +31,13 @@ class Search extends Component {
 
   queryNewsArticles = () => {
     const { searchInput, searchAll } = this.state;
+
+    const token = cookies.get('access_token');
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
     axios
       .get(`/articles/${searchAll}/${searchInput}`)
+
       .then(response => {
         const { articles, totalResults } = response.data;
         this.setState({ articles, totalResults });
@@ -44,9 +51,10 @@ class Search extends Component {
   };
   render() {
     const { articles, searchAll, totalResults, searchInput } = this.state;
-    const { avatar } = this.props.location.state.user;
-    const { user } = this.props.location.state;
-
+    const token = cookies.get('access_token');
+    const { payload } = jwt.decode(token);
+    const user = payload;
+    const { avatar } = user;
     const { logOut } = this.props;
     return (
       <React.Fragment>

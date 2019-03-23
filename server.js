@@ -3,12 +3,14 @@ const app = express();
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 const { morganChalk } = require('./middleware/morganChalk');
 require('dotenv').config();
 
 // middlewares
 app.use(helmet());
 app.use(morganChalk);
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());

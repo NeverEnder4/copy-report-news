@@ -1,9 +1,10 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const validateLoginInput = require('../validation/login');
 
-const loginUser = require('../controllers/login');
+const { loginUser, isUserLoggedIn } = require('../controllers/login');
 
 const User = require('../models/User');
 
@@ -14,6 +15,10 @@ router.post('/', (req, res) => {
 
   // find user by email
   loginUser(req, res, errors, User);
+});
+
+router.get('/', (req, res) => {
+  isUserLoggedIn(req, res, jwt);
 });
 
 module.exports = router;

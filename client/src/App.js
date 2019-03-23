@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import cookies from 'js-cookie';
 import { Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -39,6 +40,18 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    axios
+      .get('/login')
+      .then(response => {
+        const user = response.data;
+        console.log(user);
+        this.authorizeUser();
+        this.setUser(user);
+      })
+      .catch();
+  }
+
   authorizeUser = () => {
     this.setState({ isAuth: true });
   };
@@ -50,6 +63,7 @@ class App extends Component {
   logOut = () => {
     this.setState({ isAuth: false, user: null });
     delete axios.defaults.headers.common['Authorization'];
+    cookies.remove('access_token');
   };
 
   render() {
@@ -58,11 +72,16 @@ class App extends Component {
       <div className="App">
         <MuiThemeProvider theme={theme}>
           <CssBaseline>
-            <Route exact path="/" component={Landing} />
+            <Route
+              exact
+              path="/"
+              component={() => <Landing isAuth={isAuth} />}
+            />
             <Route
               path="/users"
               component={() => (
                 <Users
+                  isAuth={isAuth}
                   setUser={this.setUser}
                   authorizeUser={this.authorizeUser}
                 />

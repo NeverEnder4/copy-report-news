@@ -18,9 +18,11 @@ const loginUser = async (req, res, errors, User) => {
     return res.status(404).json(errors);
   }
 
-  // create jwt payload
+  // create jwt payload and set access token cookie
   const token = await generateJWT(user);
-  res.json({ success: true, token: `Bearer ${token}` });
+  res
+    .cookie('access_token', token)
+    .json({ success: true, token: `Bearer ${token}` });
 };
 
 const checkPassword = async (password, hash) => {
@@ -30,7 +32,8 @@ const checkPassword = async (password, hash) => {
 
 // returns a cryptic error response when condition fails for increased security
 const generateCrypticErrorResponse = errors => {
-  errors.auth = 'Could not authenticate credentials';
+  errors.email = 'Could not authenticate credentials';
+  errors.password = 'Could not authenticate credentials';
 };
 
 // generate JWT token
@@ -42,4 +45,19 @@ const generateJWT = async user => {
   return token;
 };
 
-module.exports = loginUser;
+isUserLoggedIn = (req, res, jwt) => {
+  const token = req.cookies.access_token;
+  let verified;
+  jwt.verify(
+    token,
+    process.env.SECRET,
+    { ignoreExpiration: false, maxAge: 3600 },
+    (err, decoded) => {
+      if (err) throw err;
+      verified = decoded.payload;
+    },
+  );
+  return res.json(verified);
+};
+
+module.exports = { loginUser, isUserLoggedIn };

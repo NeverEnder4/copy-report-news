@@ -120,7 +120,6 @@ class PrimarySearchAppBar extends React.Component {
       searchAll,
       searchInput,
       avatar,
-      logOut,
       user,
     } = this.props;
     const isMenuOpen = Boolean(anchorEl);
